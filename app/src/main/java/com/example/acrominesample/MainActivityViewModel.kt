@@ -11,25 +11,33 @@ import com.example.acrominesample.models.ResponseItem
 import com.example.acrominesample.network.Repository
 import retrofit2.Call
 import retrofit2.Callback
+import retrofit2.Response
 
 class MainActivityViewModel : ViewModel() {
     private val repository = Repository()
     private val _list = MutableLiveData<List<LfsItem?>>()
 
     val list: LiveData<List<LfsItem?>> = _list
+    val noResultList = listOf(LfsItem(lf = "No Results"))
 
     fun callSf(abbreviation: String) {
         repository.callSf(abbreviation).enqueue(object : Callback<List<ResponseItem>> {
 
             override fun onFailure(call: Call<List<ResponseItem>>, t: Throwable) {
                 Log.e("TAG", "ERROR", t)
+                _list.value = noResultList
             }
 
             override fun onResponse(
-                call: Call<List<ResponseItem>>, response: retrofit2.Response<List<ResponseItem>>
+                call: Call<List<ResponseItem>>, response: Response<List<ResponseItem>>
             ) {
-                _list.value = response.body()?.getOrNull(0)?.lfs
-                Log.d("TAG", response.body().toString())
+                val list = response.body()
+                if (list?.isNotEmpty() == true) {
+                    _list.value = list[0].lfs
+                } else {
+                    _list.value = noResultList
+                }
+                Log.d("TAG", list.toString())
             }
 
         })
