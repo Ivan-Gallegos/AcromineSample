@@ -1,6 +1,8 @@
 package com.example.acrominesample
 
 import android.util.Log
+import android.widget.TextView
+import android.widget.Toast
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -19,13 +21,14 @@ class MainActivityViewModel : ViewModel() {
 
     val list: LiveData<List<LfsItem?>> = _list
     val noResultList = listOf(LfsItem(lf = "No Results"))
+    val errorResultList = listOf(LfsItem(lf = "Error Try Again"))
 
     fun callSf(abbreviation: String) {
         repository.callSf(abbreviation).enqueue(object : Callback<List<ResponseItem>> {
 
             override fun onFailure(call: Call<List<ResponseItem>>, t: Throwable) {
                 Log.e("TAG", "ERROR", t)
-                _list.value = noResultList
+                _list.value = errorResultList
             }
 
             override fun onResponse(
@@ -48,6 +51,19 @@ class MainActivityViewModel : ViewModel() {
         @JvmStatic
         fun setLfList(recycler: RecyclerView, list: List<LfsItem?>?) {
             recycler.adapter = LfAdapter(list)
+        }
+
+        @BindingAdapter("app:text")
+        @JvmStatic
+        fun setLfList(textView: TextView, lfsItem: LfsItem) {
+            val text = StringBuilder(lfsItem.lf ?: "")
+            if (lfsItem.since != null) {
+                text.append("  (${lfsItem.since})")
+            }
+            if (lfsItem.freq != null) {
+                text.append(String.format("  Frequency %s ", lfsItem.freq))
+            }
+            textView.text = text.toString()
         }
     }
 
