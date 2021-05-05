@@ -15,7 +15,7 @@ interface AcromineApi {
     fun callSf(@Query("sf") abbreviation: String?): Call<List<ResponseItem>>
 
     companion object {
-        private var BASE_URL = "http://www.nactem.ac.uk"
+        var BASE_URL = "http://www.nactem.ac.uk"
 
         private val okHttpClient by lazy {
             val clientBuilder = OkHttpClient.Builder()

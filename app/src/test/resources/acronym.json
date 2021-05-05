@@ -1,0 +1,29 @@
+[
+  {
+    "sf": "USAF",
+    "lfs": [
+      {
+        "lf": "United States Air Force",
+        "freq": 37,
+        "since": 1985,
+        "vars": [
+          {
+            "lf": "United States Air Force",
+            "freq": 30,
+            "since": 1985
+          },
+          {
+            "lf": "US Air Force",
+            "freq": 6,
+            "since": 1991
+          },
+          {
+            "lf": "Unites States Air Force",
+            "freq": 1,
+            "since": 1996
+          }
+        ]
+      }
+    ]
+  }
+]
